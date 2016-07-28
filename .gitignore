@@ -1,0 +1,6 @@
+.vagrant
+archive
+*.swp
+*.adit
+stable
+ceph-ansible

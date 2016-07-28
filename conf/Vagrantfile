@@ -27,13 +27,12 @@ JOURNAL_SIZE   = settings['journal_size']
 AWS_ACCESS_KEY_ID 	= settings['aws_access_key_id']
 AWS_SECRET_ACCESS_KEY 	= settings['aws_secret_access_key']
 AWS_REGION 		= settings['aws_region']
+AWS_ZONE 		= settings['aws_zone']
 AWS_KEYPAIR 		= settings['aws_keypair_name']
 AWS_AMI 		= settings['aws_ami']
 AWS_INSTANCE_TYPE 	= settings['aws_instance_type']
 AWS_SSH_USERNAME 	= settings['aws_ssh_username']
 AWS_SSH_PRIVATE_KEYPATH = settings['aws_ssh_private_key_path']
-AWS_DEVICE_NAME 	= settings['aws_device_name']
-AWS_EBS_VOLUME_SIZE	= settings['aws_ebs_volume_size']
 
 if BOX == 'openstack'
   require 'vagrant-openstack-provider'
@@ -122,6 +121,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = BOX
   config.vm.box_url = BOX_URL
   config.ssh.insert_key = false # workaround for https://github.com/mitchellh/vagrant/issues/5048
+  config.ssh.pty = true
 
   # Faster bootup.  Disable if you need this for libvirt
   #config.vm.provider :libvirt do |v,override|
@@ -134,9 +134,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     aws.keypair_name = AWS_KEYPAIR
     aws.ami = AWS_AMI
     aws.instance_type = AWS_INSTANCE_TYPE
-
+    aws.availability_zone = AWS_ZONE
     aws.security_groups = [ 'test-open' ]
-    aws.block_device_mapping = [{ 'DeviceName' => AWS_DEVICE_NAME, 'Ebs.VolumeSize' => AWS_EBS_VOLUME_SIZE }]
 
     override.ssh.username = AWS_SSH_USERNAME
     override.ssh.private_key_path = AWS_SSH_PRIVATE_KEYPATH

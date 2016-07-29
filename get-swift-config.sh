@@ -13,8 +13,12 @@ popd
 
 SWIFT_AUTH=http://${MON_HOST}:8080/auth
 SWIFT_USER=ceph-swift:ceph-swift
-SWIFT_KEY=$KEY
+SWIFT_KEY=${KEY//\"}
 
 echo "auth_url      " $SWIFT_AUTH
+echo "auth_host     " $MON_HOST
 echo "user:subuser  " $SWIFT_USER
 echo "key           " $SWIFT_KEY
+
+export CEPH_SWIFT_KEY=$SWIFT_KEY
+export CEPH_AUTH_HOST=$MON_HOST

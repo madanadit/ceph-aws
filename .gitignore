@@ -4,3 +4,4 @@ archive
 *.adit
 stable
 ceph-ansible
+fix-test-spec.sh

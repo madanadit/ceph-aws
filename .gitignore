@@ -5,3 +5,4 @@ archive
 stable
 ceph-ansible
 fix-test-spec.sh
+.swift-credentials

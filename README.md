@@ -55,6 +55,12 @@ aws.security_groups = [ 'test-open' ]
 ```
 monitor_interface: eth0
 journal_size: 1024 # OSD journal size in MB
+radosgw_keystone: true # activate OpenStack Keystone options full detail here: http://ceph.com/docs/master/radosgw/keystone/
+radosgw_keystone_url: # url:admin_port ie: http://192.168.0.1:35357
+radosgw_keystone_admin_token: password
+radosgw_keystone_accepted_roles: Member, _member_, admin
+radosgw_keystone_token_cache_size: 10000
+radosgw_keystone_revocation_internal: 900
 ```
 
 * Modify ceph-ansible/group_vars/mons

@@ -22,3 +22,6 @@ echo "key           " $SWIFT_KEY
 
 export CEPH_SWIFT_KEY=$SWIFT_KEY
 export CEPH_AUTH_HOST=$MON_HOST
+
+echo $CEPH_SWIFT_KEY > .swift-credentials
+echo $CEPH_AUTH_HOST >> .swift-credentials

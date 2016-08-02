@@ -63,7 +63,7 @@ ansible_provision = proc do |ansible|
     'mons'            => (0..NMONS - 1).map { |j| "#{OSPREFIX}mon#{j}" },
     'osds'            => (0..NOSDS - 1).map { |j| "#{OSPREFIX}osd#{j}" },
     'mdss'            => (0..NMDSS - 1).map { |j| "#{OSPREFIX}mds#{j}" },
-    'rgws'            => (0..NRGWS - 1).map { |j| "#{OSPREFIX}rgw#{j}" },
+    'rgws'            => (0..NRGWS - 1).map { |j| "#{OSPREFIX}mon#{j}" },
     'nfss'            => (0..NNFSS - 1).map { |j| "#{OSPREFIX}nfs#{j}" },
     'rbd_mirrors'     => (0..NRBD_MIRRORS - 1).map { |j| "#{OSPREFIX}rbd_mirror#{j}" },
     'clients'         => (0..CLIENTS - 1).map { |j| "#{OSPREFIX}client#{j}" }
@@ -185,36 +185,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       # Parallels
       client.vm.provider "parallels" do |prl|
         prl.name = "ceph-client#{i}"
-        prl.memory = "#{MEMORY}"
-      end
-    end
-  end
-
-  (0..NRGWS - 1).each do |i|
-    config.vm.define "#{OSPREFIX}rgw#{i}" do |rgw|
-      rgw.vm.hostname = "#{OSPREFIX}ceph-rgw#{i}"
-      if !OSVM
-        rgw.vm.network :private_network, ip: "#{SUBNET}.5#{i}"
-      end
-
-      # Virtualbox
-      rgw.vm.provider :virtualbox do |vb|
-        vb.customize ['modifyvm', :id, '--memory', "#{MEMORY}"]
-      end
-
-      # VMware
-      rgw.vm.provider :vmware_fusion do |v|
-        v.vmx['memsize'] = "#{MEMORY}"
-      end
-
-      # Libvirt
-      rgw.vm.provider :libvirt do |lv|
-        lv.memory = MEMORY
-      end
-
-      # Parallels
-      rgw.vm.provider "parallels" do |prl|
-        prl.name = "ceph-rgw#{i}"
         prl.memory = "#{MEMORY}"
       end
     end

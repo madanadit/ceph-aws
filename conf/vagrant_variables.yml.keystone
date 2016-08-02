@@ -1,0 +1,27 @@
+---
+
+# DEFINE THE NUMBER OF VMS TO RUN
+keystone_vms: 1
+
+# AWS CONFIG
+aws_access_key_id: "<YOUR_ACCESS_KEY>"
+aws_secret_access_key: "<YOUR_SECRET_KEY>"
+aws_region: "us-east-1"
+aws_zone: "us-east-1a"
+aws_keypair_name: "<YOUR_KEYPAIR>"
+aws_ami: "ami-3bdd502c"
+aws_instance_type: "i2.2xlarge"
+aws_ssh_username: "ubuntu"
+aws_ssh_private_key_path: "<YOUR_SSH_KEYPATH>"
+
+# SUBNET TO USE FOR THE VMS
+subnet: 172.31.0
+
+# Ethernet interface name
+eth: 'eth0'
+
+# VAGRANT BOX
+vagrant_box: dummy
+
+# VAGRANT URL
+vagrant_url: https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box

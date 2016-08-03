@@ -23,7 +23,7 @@ copy_admin_key: true
 
 ## Ceph options
 #
-cephx: true
+cephx: false
 
 # Used for the sudo exception while starting the radosgw process
 # a new entry /etc/sudoers.d/ceph will be created

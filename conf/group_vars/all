@@ -203,7 +203,7 @@ ceph_stable_repo: "http://download.ceph.com/debian-hammer"
 #fsid: "{{ cluster_uuid.stdout }}"
 #generate_fsid: true
 
-cephx: true
+cephx: false
 #max_open_files: 131072
 
 ## Client options

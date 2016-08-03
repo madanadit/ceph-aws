@@ -21,4 +21,4 @@ cp conf/vagrant_variables.yml vagrant_variables.yml
 cp conf/site.yml ceph-ansible/site.yml
 cp conf/group_vars/* ceph-ansible/group_vars/
 
-#cp conf/main.yml ansible-role-keystone/defaults/main.yml
+cp conf/main.yml ansible-role-keystone/defaults/main.yml

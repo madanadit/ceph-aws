@@ -1,16 +1,8 @@
 ---
 
-# DEPLOY CONTAINERIZED DAEMONS
-docker: false
-
 # DEFINE THE NUMBER OF VMS TO RUN
 mon_vms: 1
-osd_vms: 4
-mds_vms: 0
-rgw_vms: 1
-nfs_vms: 0
-rbd_mirror_vms: 0
-client_vms: 0
+osd_vms: 3
 
 # AWS CONFIG
 aws_access_key_id: "<YOUR KEY>"
@@ -45,25 +37,12 @@ memory: 1024
 eth: 'eth0'
 
 # Disks
-# For libvirt use disks: "[ '/dev/vdb', '/dev/vdc' ]"
 disks: "[ '/dev/xvdb', '/dev/xvdc' ]"
 
 # VAGRANT BOX
-# Ubuntu: ubuntu/trusty64 or ubuntu/wily64
-# CentOS: bento/centos-7.1 or puppetlabs/centos-7.0-64-puppet
-# libvirt CentOS: centos/7
-# parallels Ubuntu: parallels/ubuntu-14.04
-# Debian: deb/jessie-amd64 - be careful the storage controller is named 'SATA Controller'
-# For more boxes have a look at:
-#   - https://atlas.hashicorp.com/boxes/search?utf8=✓&sort=&provider=virtualbox&q=
-#   - https://download.gluster.org/pub/gluster/purpleidea/vagrant/
 vagrant_box: dummy
+
 # VAGRANT URL
-# This is a URL to download an image from an alternate location.  vagrant_box
-# above should be set to the filename of the image.
-# Fedora virtualbox: https://download.fedoraproject.org/pub/fedora/linux/releases/22/Cloud/x86_64/Images/Fedora-Cloud-Base-Vagrant-22-20150521.x86_64.vagrant-virtualbox.box
-# Fedora libvirt: https://download.fedoraproject.org/pub/fedora/linux/releases/22/Cloud/x86_64/Images/Fedora-Cloud-Base-Vagrant-22-20150521.x86_64.vagrant-libvirt.box
-# vagrant_url: https://download.fedoraproject.org/pub/fedora/linux/releases/22/Cloud/x86_64/Images/Fedora-Cloud-Base-Vagrant-22-20150521.x86_64.vagrant-virtualbox.box
 vagrant_url: https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box
 
 # use vagrant_storagectl: 'SATA Controller' for CentOS

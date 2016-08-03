@@ -21,18 +21,22 @@ Assumptions / limitations:
 
 * Modify configuration
 ```
-vi ceph-ansible/vagrant_variables.yml
+vi vagrant_variables.yml
 ```
 
 * Use vagrant to launch a Ceph cluster
 ```
-cd ceph-ansible
-vagrant up
+vagrant up --no-parallel
 ``` 
 
 * Generate Swift client parameters  
 ```
 ./get-swift-config.sh
+```
+
+* Remove cloned repositories  
+```
+./cleanup.sh
 ```
 
 ## Manual Instructions (for debugging purposes)

@@ -47,17 +47,26 @@ vagrant up --no-parallel
 
 * Clone ceph-ansible
 ```
-$ git clone --branch v1.0.5 https://github.com/ceph/ceph-ansible.git
+$ git clone https://github.com/ceph/ceph-ansible.git
 ```
 
-* Modify configuration in 'vagrant_variables.yml'
-
-* Modify ceph-ansible/Vagrantfile
+* Specify AWS credentials in 'vagrant_variables.yml' (skip if not using vagrant)
 ```
-aws.security_groups = [ 'test-open' ]
+<YOUR_KEY>
+<YOUR_SECRET>
+<YOUR_KEYPAIR>
+<YOUR_KEYPATH>
 ```
 
-* Modify ceph-ansible/ansible.cfg: ssh control_path to a shorter length
+* Copy Vagrantfile from 'conf' (skip if not using vagrant)
+```
+cp conf/Vagrantfile .
+```
+
+* Modify ceph-ansible/ansible.cfg
+```
+ssh control_path to a shorter length
+```
 
 * Modify ceph-ansible/group_vars/all
 ```
@@ -81,9 +90,14 @@ devices:
 
 * Modify ceph-ansible/group_vars/rgws
 
-* Modify ceph-ansible/site.yml
+* Clone ansible-role-keystone
+```
+$ git clone https://github.com/openstack-ansible/ansible-role-keystone.git
+```
 
-* Modify ceph-ansible/vagrant_variables.yml
+* Modify ansible-role-keystone/defaults/main.yml
+
+* Modify ansible-role-keystone/ansible.cfg
 
 * Check health of Ceph cluster on monitor node
 ```
@@ -96,9 +110,14 @@ sudo rados put -p data test-file.out test-file.out
 rados ls -p data
 ```
 
-* Create Swift user and key on rados gateway node
+* Create Swift user and key on rados gateway node (only for v1 authentication)
 ```
 $ sudo radosgw-admin user create --uid=ceph-swift --display-name="Ceph Swift"
 $ sudo radosgw-admin subuser create --uid=ceph-swift --subuser=ceph-swift:ceph-swift --access=full
 $ sudo radosgw-admin key create --subuser=ceph-swift:ceph-swift --key-type=swift --gen-secret
+```
+
+* Create Keystone user and tenant (only for v2 authentication)
+```
+$
 ```

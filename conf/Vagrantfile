@@ -26,6 +26,8 @@ AWS_AMI 		= settings['aws_ami']
 AWS_INSTANCE_TYPE 	= settings['aws_instance_type']
 AWS_SSH_USERNAME 	= settings['aws_ssh_username']
 AWS_SSH_PRIVATE_KEYPATH = settings['aws_ssh_private_key_path']
+AWS_DEVICE_NAME 	= settings['aws_device_name']
+AWS_EBS_VOLUME_SIZE	= settings['aws_ebs_volume_size']
 
 ansible_provision = proc do |ansible|
   ansible.playbook = 'ceph-ansible/site.yml'
@@ -70,6 +72,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     aws.instance_type = AWS_INSTANCE_TYPE
     aws.availability_zone = AWS_ZONE
     aws.security_groups = [ 'test-open' ]
+    aws.block_device_mapping = [{ 'DeviceName' => AWS_DEVICE_NAME, 'Ebs.VolumeSize' => AWS_EBS_VOLUME_SIZE }]
 
     override.ssh.username = AWS_SSH_USERNAME
     override.ssh.private_key_path = AWS_SSH_PRIVATE_KEYPATH

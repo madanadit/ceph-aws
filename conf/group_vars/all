@@ -203,7 +203,7 @@ ceph_stable_repo: "http://download.ceph.com/debian-hammer"
 #fsid: "{{ cluster_uuid.stdout }}"
 #generate_fsid: true
 
-cephx: false
+#cephx: false
 #max_open_files: 131072
 
 ## Client options
@@ -287,13 +287,13 @@ pool_default_size: 1
 #radosgw_civetweb_bind_ip: "{{ ansible_default_ipv4.address }}"
 #radosgw_civetweb_num_threads: 50
 radosgw_keystone: true # activate OpenStack Keystone options full detail here: http://ceph.com/docs/master/radosgw/keystone/
-radosgw_keystone_url: http://localhost:35357/v2.0
+radosgw_keystone_url: http://localhost:35357
 radosgw_keystone_admin_token: mKECk0hrJTczWrCd0fCE
 radosgw_keystone_accepted_roles: Member, _member_, admin
 radosgw_keystone_token_cache_size: 10000
 radosgw_keystone_revocation_internal: 900
 radosgw_s3_auth_use_keystone: "true"
-#radosgw_nss_db_path: /var/lib/ceph/radosgw/ceph-radosgw.{{ ansible_hostname }}/nss
+radosgw_nss_db_path: /var/lib/ceph/radosgw/ceph-radosgw.{{ ansible_hostname }}/nss
 # Toggle 100-continue support for Apache and FastCGI
 # WARNING: Changing this value will cause an outage of Apache while it is reinstalled on RGW nodes
 #http_100_continue: false

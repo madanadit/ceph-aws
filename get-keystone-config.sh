@@ -1,10 +1,18 @@
 #!/bin/bash
 
-vagrant ssh mon0 -c "keystone --os-endpoint http://localhost:35357/v2.0 --os-token mKECk0hrJTczWrCd0fCE tenant-create --name=ceph"
-vagrant ssh mon0 -c "keystone --os-endpoint http://localhost:35357/v2.0 --os-token mKECk0hrJTczWrCd0fCE user-create --name=ceph --pass ceph tenant-id=ceph --enabled true"
-
 RGW0=`cat .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory | grep mon0 -m 1`
 MON_HOST=`cut -d "=" -f 2 <<< $RGW0 | cut -d " " -f 1`
+
+SERVICE_ID=`vagrant ssh mon0 -c "keystone --os-endpoint http://localhost:35357/v2.0 --os-token mKECk0hrJTczWrCd0fCE service-create --name swift --type object-store | grep id | cut -d '|' -f 3"`
+SERVICE_ID=`echo $SERVICE_ID | xargs`
+echo "Service ID " $SERVICE_ID
+
+vagrant ssh mon0 -c "keystone --os-endpoint http://localhost:35357/v2.0 --os-token mKECk0hrJTczWrCd0fCE endpoint-create --region RegionOne --service-id ${SERVICE_ID} --publicurl http://${MON_HOST}:8080/swift/v1 --internalurl http://${MON_HOST}:8080/swift/v1 --adminurl http://${MON_HOST}:8080/swift/v1"
+
+vagrant ssh mon0 -c "keystone --os-endpoint http://localhost:35357/v2.0 --os-token mKECk0hrJTczWrCd0fCE tenant-create --name ceph"
+vagrant ssh mon0 -c "keystone --os-endpoint http://localhost:35357/v2.0 --os-token mKECk0hrJTczWrCd0fCE user-create --name ceph --pass ceph --tenant-id ceph --enabled true"
+vagrant ssh mon0 -c "keystone --os-endpoint http://localhost:35357/v2.0 --os-token mKECk0hrJTczWrCd0fCE role-create --name admin"
+vagrant ssh mon0 -c "keystone --os-endpoint http://localhost:35357/v2.0 --os-token mKECk0hrJTczWrCd0fCE user-role-add --user ceph --tenant ceph --role admin"
 
 KEYSTONE_AUTH=http://${MON_HOST}:35357/v2.0
 KEYSTONE_USER=ceph:ceph

@@ -12,13 +12,14 @@ cp conf/Vagrantfile Vagrantfile
 
 mkdir -p plugins/actions
 cp ceph-ansible/plugins/actions/* plugins/actions/
+cp ceph-ansible/site.yml.sample ceph-ansible/site.yml
+
 cp conf/ansible.cfg ansible.cfg
 cp conf/ansible.cfg ceph-ansible/ansible.cfg
 cp conf/ansible.cfg ansible-role-keystone/ansible.cfg
 
-cp conf/vagrant_variables.yml vagrant_variables.yml
+cp conf/vagrant_variables.yml.sample vagrant_variables.yml
 
-cp conf/site.yml ceph-ansible/site.yml
 cp conf/group_vars/* ceph-ansible/group_vars/
 
 cp conf/main.yml ansible-role-keystone/defaults/main.yml

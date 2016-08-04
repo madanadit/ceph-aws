@@ -1,7 +1,7 @@
 .vagrant
 archive
 *.swp
-*.adit
+*.personal
 stable
 ceph-ansible
 fix-test-spec.sh

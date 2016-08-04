@@ -46,7 +46,7 @@ dummy:
 
 # ACTIVATE THE FSID VARIABLE FOR NON-VAGRANT DEPLOYMENT
 #fsid: "{{ cluster_uuid.stdout }}"
-#cephx: false
+#cephx: true
 
 # Devices to be used as OSDs
 # You can pre-provision disks that are not present yet.
@@ -65,7 +65,7 @@ dummy:
 # All the scenarii inherit from the following device declaration
 #
 #devices:
-#  - /dev/xvdc
+#  - /dev/sdb
 #  - /dev/sdc
 
 # Device discovery is based on the Ansible fact 'ansible_devices'
@@ -75,7 +75,7 @@ dummy:
 # Thus devices with existing partition tables will not be used.
 # This mode prevents you from filling out the 'devices' variable above.
 #
-#osd_auto_discovery: true
+#osd_auto_discovery: false
 
 # I. First scenario: journal and osd_data on the same device
 # Use 'true' to enable this scenario

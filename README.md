@@ -47,43 +47,76 @@ vagrant up --no-parallel
 
 * Clone ceph-ansible
 ```
-$ git clone --branch v1.0.5 https://github.com/ceph/ceph-ansible.git
+$ git clone https://github.com/ceph/ceph-ansible.git
 ```
 
-* Modify configuration in 'vagrant_variables.yml'
-
-* Modify ceph-ansible/Vagrantfile
+* Specify AWS credentials in 'vagrant_variables.yml' (skip if not using vagrant)
 ```
-aws.security_groups = [ 'test-open' ]
+<YOUR_KEY>
+<YOUR_SECRET>
+<YOUR_KEYPAIR>
+<YOUR_KEYPATH>
 ```
 
-* Modify ceph-ansible/ansible.cfg: ssh control_path to a shorter length
+* Copy Vagrantfile from 'conf' (skip if not using vagrant)
+```
+cp conf/Vagrantfile .
+```
+
+* Modify ceph-ansible/ansible.cfg
+```
+[ssh_connection]
+control_path = %(directory)s/%%h-%%r
+```
 
 * Modify ceph-ansible/group_vars/all
 ```
 monitor_interface: eth0
-journal_size: 1024 # OSD journal size in MB
-radosgw_keystone: true # activate OpenStack Keystone options full detail here: http://ceph.com/docs/master/radosgw/keystone/
-radosgw_keystone_url: # url:admin_port ie: http://192.168.0.1:35357
-radosgw_keystone_admin_token: password
+radosgw_keystone: true
+radosgw_keystone_url: http://localhost:35357 #Assuming RGW and keystone services are co-located
+radosgw_keystone_admin_token: mKECk0hrJTczWrCd0fCE #Keystone token visible in /etc/keystone/keystone.conf
 radosgw_keystone_accepted_roles: Member, _member_, admin
 radosgw_keystone_token_cache_size: 10000
 radosgw_keystone_revocation_internal: 900
+radosgw_nss_db_path: /var/lib/ceph/radosgw/ceph-radosgw.{{ ansible_hostname }}/nss
 ```
 
 * Modify ceph-ansible/group_vars/mons
+```
+mon_group_name: mons
+```
 
 * Modify ceph-ansible/group_vars/osds
 ```
-devices:
-  - /dev/xvdc
+journal_collocation: true
 ``` 
 
 * Modify ceph-ansible/group_vars/rgws
+```
+copy_admin_key: true
+```
 
-* Modify ceph-ansible/site.yml
+* Clone ansible-role-keystone
+```
+$ git clone https://github.com/openstack-ansible/ansible-role-keystone.git
+```
 
-* Modify ceph-ansible/vagrant_variables.yml
+* Modify ansible-role-keystone/defaults/main.yml
+```
+openstack_identity_admin_token: mKECk0hrJTczWrCd0fCE #Hard-code token instead of auto-generate
+```
+
+* Modify ansible-role-keystone/ansible.cfg
+```
+[defaults]
+host_key_checking = false
+roles_path = roles
+gathering = smart
+nocows = 1
+
+[ssh_connection]
+pipelining = true
+```
 
 * Check health of Ceph cluster on monitor node
 ```
@@ -96,9 +129,18 @@ sudo rados put -p data test-file.out test-file.out
 rados ls -p data
 ```
 
-* Create Swift user and key on rados gateway node
+* Create Swift user and key on rados gateway node (only for v1 authentication)
 ```
 $ sudo radosgw-admin user create --uid=ceph-swift --display-name="Ceph Swift"
 $ sudo radosgw-admin subuser create --uid=ceph-swift --subuser=ceph-swift:ceph-swift --access=full
 $ sudo radosgw-admin key create --subuser=ceph-swift:ceph-swift --key-type=swift --gen-secret
+```
+
+* Create Keystone user, tenant, service and endpoint (only for v2 authentication)
+```
+$ keystone --os-endpoint http://localhost:35357/v2.0 --os-token mKECk0hrJTczWrCd0fCE service-create --name swift --type object-store
+$ keystone --os-endpoint http://localhost:35357/v2.0 --os-token mKECk0hrJTczWrCd0fCE endpoint-create --region RegionOne --service-id ${SERVICE_ID} --publicurl http://${MON_HOST}:8080/swift/v1 --internalurl http://${MON_HOST}:8080/swift/v1 --adminurl http://${MON_HOST}:8080/swift/v1
+$ keystone --os-endpoint http://localhost:35357/v2.0 --os-token mKECk0hrJTczWrCd0fCE tenant-create --name ceph
+$ keystone --os-endpoint http://localhost:35357/v2.0 --os-token mKECk0hrJTczWrCd0fCE user-create --name ceph --pass ceph --tenant-id ceph --enabled true
+$ keystone --os-endpoint http://localhost:35357/v2.0 --os-token mKECk0hrJTczWrCd0fCE user-role-add --user ceph --tenant ceph --role admin
 ```

@@ -29,9 +29,14 @@ vi vagrant_variables.yml
 vagrant up --no-parallel
 ``` 
 
-* Generate Swift client parameters  
+* Generate Swift client parameters v1.0
 ```
 ./get-swift-config.sh
+```
+
+* Generate Swift client parameters v2.0
+```
+./get-keystone-config.sh
 ```
 
 * Remove cloned repositories  

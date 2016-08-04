@@ -1,9 +1,0 @@
-[defaults]
-host_key_checking = false
-roles_path = roles
-gathering = smart
-nocows = 1
-
-[ssh_connection]
-pipelining = true
-control_path = %(directory)s/%%h-%%r

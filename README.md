@@ -1,45 +1,44 @@
 ceph-ansible-aws
 ================
 
-AWS deployment for Ceph using ceph-ansible playbook.
+AWS deployment for Ceph with Keystone integration using ceph-ansible and ansible-role-keystone playbooks.
 
 Prerequisites:
 * git
-* aws-vagrant
-* ansible (tested v2.1.0.0)
+* vagrant (tested with v1.8.4)
+* ansible (tested with v1.9.4)
 
 Assumptions / limitations:
-* a security group named 'test-open' has been created on aws
-* launch aws instance has interface 'eth0'
-* pool_default_size is always 1
+* a security group named 'test-open' exists on AWS
+* launched AWS instance has interface 'eth0'
 
 ## How to use
-* Clone ceph-ansible and configure
+* Clone required repositories and configure
 ```
 ./setup.sh
 ```
 
-* Modify configuration
+* Modify configuration to specify AWS credentials
 ```
 vi vagrant_variables.yml
 ```
 
-* Use vagrant to launch a Ceph cluster
+* Use vagrant to launch a Ceph cluster with Keystone integration
 ```
 vagrant up --no-parallel
 ``` 
 
-* Generate Swift client parameters v1.0
+* Generate Swift client parameters (v1.0 only)
 ```
 ./get-swift-config.sh
 ```
 
-* Generate Swift client parameters v2.0
+* Generate Keystone client parameters (v2.0 only)
 ```
 ./get-keystone-config.sh
 ```
 
-* Remove cloned repositories  
+* Remove cloned repositories
 ```
 ./cleanup.sh
 ```

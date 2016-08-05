@@ -6,3 +6,9 @@ stable
 ceph-ansible
 fix-test-spec.sh
 .swift-credentials
+Vagrantfile
+ansible-role-keystone
+ansible.cfg
+plugins
+vagrant_variables.yml
+private

@@ -25,7 +25,7 @@ vi vagrant_variables.yml
 
 * Use vagrant to launch a Ceph cluster with Keystone integration
 ```
-vagrant up --no-parallel
+vagrant up mon0 --no-parallel && vagrant up osd0 osd1 osd2 --parallel
 ``` 
 
 * Generate Swift client parameters (v1.0 only)

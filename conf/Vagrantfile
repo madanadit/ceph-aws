@@ -31,7 +31,6 @@ AWS_EBS_VOLUME_SIZE	= settings['aws_ebs_volume_size']
 
 ansible_provision = proc do |ansible|
   ansible.playbook = 'ceph-ansible/site.yml'
-  ansible.verbose = "vvv"
 
   ansible.groups = {
     'mons'            => (0..NMONS - 1).map { |j| "mon#{j}" },
@@ -88,7 +87,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision :ansible do |ansible|
     ansible.playbook = 'ansible-role-keystone/getreqs.yml'
-    ansible.verbose = "vvv"
     ansible.groups = {
       'keystone_all'       => (0..NMONS - 1).map { |j| "mon#{j}" }
     }
@@ -97,7 +95,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision :ansible do |ansible|
     ansible.playbook = 'ansible-role-keystone/prepare-vm.yml'
-    ansible.verbose = "vvv"
     ansible.groups = {
       'keystone_all'       => (0..NMONS - 1).map { |j| "mon#{j}" }
     }
@@ -106,7 +103,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision :ansible do |ansible|
     ansible.playbook = 'ansible-role-keystone/deploy.yml'
-    ansible.verbose = "vvv"
     ansible.groups = {
       'keystone_all'       => (0..NMONS - 1).map { |j| "mon#{j}" }
     }
@@ -115,7 +111,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision :ansible do |ansible|
     ansible.playbook = 'ansible-role-keystone/test.yml'
-    ansible.verbose = "vvv"
     ansible.groups = {
       'keystone_all'       => (0..NMONS - 1).map { |j| "mon#{j}" }
     }
